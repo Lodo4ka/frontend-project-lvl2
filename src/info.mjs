@@ -1,4 +1,4 @@
-import { Command } from "commander";
+import { Command } from 'commander';
 
 const program = new Command();
 
@@ -9,4 +9,4 @@ program
 
 program.parse(process.argv);
 
-const options = program.opts();
+program.opts();
