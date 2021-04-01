@@ -43,6 +43,7 @@ program
         }
         return acc;
       }, {});
+    console.log(diffResult);
     return diffResult;
   });
 
