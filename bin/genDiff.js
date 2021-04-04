@@ -1,2 +1,4 @@
 #!/usr/bin/env node
-import '../src/info.mjs';
+import info from '../src/info.mjs';
+
+info();
