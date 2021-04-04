@@ -25,13 +25,12 @@
   "homepage": "https://github.com/Lodo4ka/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^7.2.0",
+    "js-yaml": "^3.14.1",
     "lodash-es": "^4.17.21"
   },
   "jest": {
     "testEnvironment": "node",
-    "transform": {
-
-    },
+    "transform": {},
     "testRunner": "jest-circus/runner"
   },
   "type": "module",

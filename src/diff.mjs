@@ -3,13 +3,11 @@ import {
 } from 'lodash-es';
 
 export default (source1, source2) => {
-  const dataJ1 = JSON.parse(source1);
-  const dataJ2 = JSON.parse(source2);
-  if (isEqual(dataJ1, dataJ2)) {
-    return dataJ2;
+  if (isEqual(source1, source2)) {
+    return source2;
   }
-  const keyValues1 = Object.entries(dataJ1);
-  const keyValues2 = Object.entries(dataJ2);
+  const keyValues1 = Object.entries(source1);
+  const keyValues2 = Object.entries(source2);
   const similarity = intersectionWith(keyValues1, keyValues2, isEqual);
   const diff1 = differenceWith(keyValues1, similarity, isEqual);
   const diff2 = differenceWith(keyValues2, similarity, isEqual);
@@ -18,11 +16,11 @@ export default (source1, source2) => {
   const sortData = sortBy([...similarity, ...diff1, ...diff2], ([key]) => key);
   return sortData
     .reduce((acc, [key, value]) => {
-      if (diffKeys1.includes(key) && diffKeys2.includes(key) && dataJ1[key] !== dataJ2[key]) {
-        acc[`- ${key}`] = dataJ1[key];
+      if (diffKeys1.includes(key) && diffKeys2.includes(key) && source1[key] !== source2[key]) {
+        acc[`- ${key}`] = source1[key];
         acc[`+ ${key}`] = value;
       } else if (diffKeys1.includes(key) && !diffKeys2.includes(key)) {
-        acc[`- ${key}`] = dataJ1[key];
+        acc[`- ${key}`] = source1[key];
       } else if (!diffKeys1.includes(key) && diffKeys2.includes(key)) {
         acc[`+ ${key}`] = value;
       } else {

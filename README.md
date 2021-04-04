@@ -7,3 +7,6 @@
 
 #### Diff json
 [![asciicast](https://asciinema.org/a/kb5u8hVzqBoPPGd1LdgfnGsyR.svg)](https://asciinema.org/a/kb5u8hVzqBoPPGd1LdgfnGsyR)
+
+#### Diff yml
+[![asciicast](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj.svg)](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj)
