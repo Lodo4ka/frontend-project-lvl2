@@ -1,5 +1,5 @@
 import {
-  differenceWith, intersectionWith, isEqual, sortBy,
+  union, isEqual, has, isObject, get,
 } from 'lodash-es';
 
 export default (source1, source2) => {
@@ -8,24 +8,26 @@ export default (source1, source2) => {
   }
   const keyValues1 = Object.entries(source1);
   const keyValues2 = Object.entries(source2);
-  const similarity = intersectionWith(keyValues1, keyValues2, isEqual);
-  const diff1 = differenceWith(keyValues1, similarity, isEqual);
-  const diff2 = differenceWith(keyValues2, similarity, isEqual);
-  const diffKeys1 = diff1.map(([diff]) => diff);
-  const diffKeys2 = diff2.map(([diff]) => diff);
-  const sortData = sortBy([...similarity, ...diff1, ...diff2], ([key]) => key);
-  return sortData
-    .reduce((acc, [key, value]) => {
-      if (diffKeys1.includes(key) && diffKeys2.includes(key) && source1[key] !== source2[key]) {
-        acc[`- ${key}`] = source1[key];
-        acc[`+ ${key}`] = value;
-      } else if (diffKeys1.includes(key) && !diffKeys2.includes(key)) {
-        acc[`- ${key}`] = source1[key];
-      } else if (!diffKeys1.includes(key) && diffKeys2.includes(key)) {
-        acc[`+ ${key}`] = value;
+  const unionKeyValues = union(keyValues1, keyValues2);
+  const generateDiffInfo = (values, parent) => {
+    const result = values.reduce((acc, [key, value]) => {
+      const currentKey = [...parent, key].join('.');
+      if (isObject(value)) {
+        const children = Object.entries(value);
+        acc[key] = { ...acc[key], ...generateDiffInfo(children, [...parent, key]) };
+      } else if (!has(source1, currentKey)) {
+        acc[key] = 'added';
+      } else if (!has(source2, currentKey)) {
+        acc[key] = 'deleted';
+      } else if (get(source1, currentKey) !== get(source2, currentKey)) {
+        acc[key] = 'changed';
       } else {
-        acc[key] = value;
+        acc[key] = 'unchanged';
       }
       return acc;
     }, {});
+    return result;
+  };
+  const diffInfo = generateDiffInfo(unionKeyValues, []);
+  return { diffInfo, source1, source2 };
 };
