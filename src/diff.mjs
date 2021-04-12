@@ -9,13 +9,30 @@ export default (source1, source2) => {
   const keyValues1 = Object.entries(source1);
   const keyValues2 = Object.entries(source2);
   const unionKeyValues = union(keyValues1, keyValues2);
-  const childrenSetStatus = (children, statusArg) => Object.entries(children)
-    .reduce((acc, [key, value]) => (!isEmpty(value)
-      ? childrenSetStatus(value, statusArg) : { ...acc, [key]: { ...value, status: statusArg } }));
+
+  const setChildrenStatus = (children, statusArg) => {
+    const iter = (childrenArg) => Object.entries(childrenArg)
+      .reduce((acc, [key, { children: childrenNode }]) => ({
+        ...acc,
+        [key]: {
+          status: statusArg,
+          children: !isEmpty(childrenNode) ? iter(childrenNode, statusArg) : childrenNode,
+        },
+      }), {});
+    return iter(children, statusArg);
+  };
+
   const getStatuses = (children) => Object.values(children)
-    .map(({ status, childrenNode }) => (!isEmpty(childrenNode)
+    .flatMap(({ status, children: childrenNode }) => (!isEmpty(childrenNode)
       ? getStatuses(childrenNode) : status));
-  const hasChangeNodes = (childrenArg) => getStatuses(childrenArg).includes('changed');
+
+  const haveChangeNodes = (childrenArg) => getStatuses(childrenArg).includes('changed');
+
+  const haveSameStatus = (children) => {
+    const statuses = uniq(getStatuses(children));
+    return statuses.length === 1;
+  };
+
   const generateAstDiff = (values, parent) => {
     const result = values
       .reduce((acc, [key, value]) => {
@@ -25,22 +42,6 @@ export default (source1, source2) => {
         if (isObject(value)) {
           const childrenNode = Object.entries(value);
           children = generateAstDiff(childrenNode, [...parent, key]);
-          const areChangeNodes = hasChangeNodes(children);
-          const prevChildren = acc[key]?.children ?? {};
-          if (areChangeNodes) {
-            return { ...acc, [key]: { status, children: { ...prevChildren, ...children } } };
-          }
-          const statuses = uniq(getStatuses(children));
-          const hasSameStatus = statuses.length === 1;
-          if (hasSameStatus) {
-            return {
-              ...acc,
-              [key]: {
-                status: statuses[0],
-                children: { ...prevChildren, ...childrenSetStatus(children, status) },
-              },
-            };
-          }
         }
         if (!has(source1, currentKey)) {
           status = 'added';
@@ -49,10 +50,30 @@ export default (source1, source2) => {
         } else if (get(source1, currentKey) !== get(source2, currentKey)) {
           status = 'changed';
         }
-        return { ...acc, [key]: { status, children } };
+        return {
+          ...acc,
+          [key]: {
+            status,
+            children: { ...get(acc, currentKey)?.children, ...children },
+          },
+        };
       }, {});
     return result;
   };
-  const diffInfo = generateAstDiff(unionKeyValues, []);
+  const ast = generateAstDiff(unionKeyValues, []);
+  const formatNestedAst = (astArg) => Object.entries(astArg)
+    .reduce((acc, [key, { children, status }]) => {
+      let newChildren = children;
+      let newStatus = '';
+      if (!isEmpty(children)) {
+        newStatus = haveChangeNodes(children) ? 'unchanged' : status;
+        if (haveSameStatus(children)) {
+          [newStatus] = getStatuses(children);
+          newChildren = setChildrenStatus(children, 'unchanged');
+        }
+      }
+      return { ...acc, [key]: { children: newChildren, status: newStatus } };
+    }, {});
+  const diffInfo = formatNestedAst(ast);
   return { diffInfo, source1, source2 };
 };
