@@ -1,5 +1,5 @@
 import {
-  union, isEqual, has, isObject, get, isEmpty, uniq,
+  union, isEqual, has, isObject, get, isEmpty, uniq, sortBy,
 } from 'lodash-es';
 
 export default (source1, source2) => {
@@ -79,5 +79,10 @@ export default (source1, source2) => {
       return { ...acc, [key]: { children: newChildren, status } };
     }, {});
   const diffInfo = formatNestedAst(ast);
-  return { diffInfo, source1, source2 };
+  const hasChildren = (children) => !isEmpty(children);
+  const sortByKey = (obj) => sortBy(Object.entries(obj), ([key]) => key)
+    .map(([key, val]) => (hasChildren(val.children)
+      ? [key, { ...val, children: sortByKey(val.children) }] : [key, val]));
+  const sortDiffInfo = sortByKey(diffInfo);
+  return { diffInfo: sortDiffInfo, source1, source2 };
 };

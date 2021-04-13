@@ -27,7 +27,7 @@ test('compare two plain json', () => {
   const file2 = readFile('ex2.json');
   const [serData1, serData2] = jsonParser(file1, file2);
   const { diffInfo, source1, source2 } = diff(serData1, serData2);
-  const result = stylish(diffInfo, source1, source2);
+  const result = plain(diffInfo, source1, source2);
   expect(result).toEqual(asnwerPlain);
 });
 

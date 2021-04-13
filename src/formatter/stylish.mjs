@@ -1,15 +1,11 @@
 import {
-  sortBy, isEmpty, get, isObject, isUndefined,
+  isEmpty, get, isObject, isUndefined,
 } from 'lodash-es';
 
 export default (diffInfo, source1, source2) => {
   const replacer = ' ';
   const spaceCount = 2;
   const hasChildren = (children) => !isEmpty(children);
-  const sortCustom = (obj) => sortBy(Object.entries(obj), ([key]) => key)
-    .map(([key, val]) => (hasChildren(val.children)
-      ? [key, { ...val, children: sortCustom(val.children) }] : [key, val]));
-  const sortDiffInfo = sortCustom(diffInfo);
   const createStylishLines = (diff, depth, parent) => diff
     .reduce((acc, [key, { status, children }]) => {
       const currentKey = [...parent, key].join('.');
@@ -60,7 +56,7 @@ export default (diffInfo, source1, source2) => {
           childrenNode: children, symbol: ' ', keyNode: key, pathKey: currentKey, node: isUndefined(get(source1, currentKey)) ? source2 : source1, indent: { element: elemeIndent, bracket: bracketIndent }, depthNode: depth,
         })];
     }, []);
-  const lines = createStylishLines(sortDiffInfo, 1, []);
+  const lines = createStylishLines(diffInfo, 1, []);
   return [
     '{',
     ...lines,
