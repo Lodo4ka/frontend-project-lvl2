@@ -60,19 +60,23 @@ export default (source1, source2) => {
       }, {});
     return result;
   };
+
   const ast = generateAstDiff(unionKeyValues, []);
+
   const formatNestedAst = (astArg) => Object.entries(astArg)
     .reduce((acc, [key, { children, status }]) => {
       let newChildren = children;
       let newStatus = '';
       if (!isEmpty(children)) {
         newStatus = haveChangeNodes(children) ? 'unchanged' : status;
-        if (haveSameStatus(children)) {
+        if (haveSameStatus(children) && newStatus !== 'unchanged') {
           [newStatus] = getStatuses(children);
           newChildren = setChildrenStatus(children, 'unchanged');
+          return { ...acc, [key]: { children: formatNestedAst(newChildren), status: newStatus } };
         }
+        return { ...acc, [key]: { children: formatNestedAst(newChildren), status: newStatus } };
       }
-      return { ...acc, [key]: { children: newChildren, status: newStatus } };
+      return { ...acc, [key]: { children: newChildren, status } };
     }, {});
   const diffInfo = formatNestedAst(ast);
   return { diffInfo, source1, source2 };
