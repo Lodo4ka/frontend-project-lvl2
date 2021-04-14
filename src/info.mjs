@@ -4,6 +4,8 @@ import fs from 'fs';
 import diff from './diff.mjs';
 import jsonParser from './parsers/json-parser.mjs';
 import ymlParser from './parsers/yml-parser.mjs';
+import stylish from './formatter/stylish.mjs';
+import plain from './formatter/plain.mjs';
 
 export default () => {
   const program = new Command();
@@ -11,8 +13,10 @@ export default () => {
   program
     .version('0.0.1', '-v, --vers', 'output the current version')
     .arguments('<source1> <source2>')
-    .option('-f, --format [type]', 'output format')
+    .option('-f, --format [type]', 'output format', 'stylish')
     .action((source1, source2) => {
+      const opts = program.opts();
+      const formatStylish = opts.format;
       const path1 = path.resolve(source1);
       const path2 = path.resolve(source2);
       const format = path.extname(source2);
@@ -25,11 +29,13 @@ export default () => {
         parse = jsonParser;
       }
       const [serData1, serData2] = parse(data1, data2);
-      const result = diff(serData1, serData2);
-      console.log(result);
-    });
-
-  program.parse(process.argv);
-
-  program.opts();
+      const { diffInfo, source1: s1, source2: s2 } = diff(serData1, serData2);
+      if (formatStylish === 'stylish') {
+        console.log(stylish(diffInfo, s1, s2));
+      } else {
+        console.log(plain(diffInfo, s1, s2));
+      }
+    })
+    .parse(process.argv)
+    .opts();
 };
