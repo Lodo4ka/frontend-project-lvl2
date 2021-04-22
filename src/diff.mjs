@@ -10,7 +10,13 @@ export default (source1, source2) => {
   const keyValues2 = Object.entries(source2);
   const unionKeyValues = union(keyValues1, keyValues2);
 
-  const setUniqueByKey = (collection) => uniqBy(collection, (item) => item.key);
+  const setUniqueByKey = (collection) => uniqBy(collection, (item) => (has(item, 'key') ? item.key : item));
+  const sortByKey = (collection) => sortBy(collection, (item) => (has(item, 'key') ? item.key : item))
+    .map((item) => (isObject(item) ? ({
+      ...item,
+      value: Array.isArray(item.value)
+        ? sortByKey(item.value) : item.value,
+    }) : item));
 
   const generateAstDiff = (ast) => {
     const iter = (astIter, parent) => astIter.map(([key, value]) => {
@@ -53,7 +59,7 @@ export default (source1, source2) => {
         const [findElem] = acc.filter((a) => a.key === elem.key);
         return findElem
           ? acc.map((a) => (a.key === findElem.key
-            && isObject(elem.value) && !Array.isArray(elem.value)
+            && isObject(elem.value)
             ? {
               ...a,
               value: setUniqueByKey([...elem.value, ...a.value]),
@@ -64,10 +70,6 @@ export default (source1, source2) => {
   };
 
   const ast = generateAstDiff(unionKeyValues);
-
-  console.log('ast', JSON.stringify(ast));
-
-  const sortByKey = (astSort) => sortBy(astSort, (el) => el.key);
 
   const sortDiffInfo = sortByKey(ast);
   return sortDiffInfo;
