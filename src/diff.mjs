@@ -11,7 +11,7 @@ export default (source1, source2) => {
   const unionKeyValues = union(keyValues1, keyValues2);
 
   const setUniqueByKey = (collection) => uniqBy(collection, (item) => (has(item, 'key') ? item.key : item));
-  const sortByKey = (collection) => sortBy(collection, (item) => (has(item, 'key') ? item.key : item))
+  const sortByKey = (collection) => sortBy(collection, (item) => (has(item, 'key') && item.key))
     .map((item) => (isObject(item) ? ({
       ...item,
       value: Array.isArray(item.value)
