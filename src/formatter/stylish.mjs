@@ -1,19 +1,24 @@
 import {
-  has, isObject,
+  has, isObject, uniq,
 } from 'lodash-es';
 import { replacer, spaceCount } from '../common/constants.mjs';
 
 export default (diffInfo) => {
   const isNestedNode = (children) => isObject(children) && has(children[0], 'key');
+
   const childrenHaveSameStatus = (children, parentStatus) => {
-    const statuses = children
+    const iter = (childrenArg) => childrenArg
       .flatMap(({ status, value }) => ((isNestedNode(value))
-        ? childrenHaveSameStatus(value) : status));
+        ? iter(value) : status));
+    const statuses = uniq(iter(children, parentStatus));
     return statuses.length === 1 && statuses[0] === parentStatus;
   };
-  const normalizeDiff = (childrenArg, status) => childrenArg
-    .map((child) => (isNestedNode(child)
-      ? normalizeDiff(child.value, status) : { ...child, status }));
+
+  const setStatusChildren = (childrenArg, status) => childrenArg
+    .map((child) => (isNestedNode(child.value)
+      ? { ...child, status, value: setStatusChildren(child.value, status) }
+      : { ...child, status }));
+
   const createStylishLines = (diff, depth) => diff.flatMap(({ key, status, value }) => {
     const indentSize = depth * spaceCount;
     const elemeIndent = replacer.repeat((indentSize));
@@ -22,7 +27,7 @@ export default (diffInfo) => {
     const getValue = (valueArg, parentStatus) => {
       if (isNestedNode(valueArg)) {
         const haveSameStatuses = childrenHaveSameStatus(valueArg, parentStatus);
-        const children = haveSameStatuses ? normalizeDiff(valueArg, 'unchanged') : valueArg;
+        const children = haveSameStatuses ? setStatusChildren(valueArg, 'unchanged') : valueArg;
         const nestedNode = createStylishLines(children, depth + 2).join('\n');
         return `{\n${nestedNode}\n ${bracketIndent}}`;
       }

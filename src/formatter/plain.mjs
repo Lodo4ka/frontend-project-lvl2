@@ -12,7 +12,6 @@ export default (diffInfo, source1, source2) => {
     if (status === 'changed') {
       return [...acc, `${elemeIndent}- ${key}: ${source1[key]}`, `${elemeIndent}+ ${key}: ${source2[key]}`];
     }
-    // const result = `Property '${}common.follow' was added with value:${} false`;
     return [...acc, `${elemeIndent}  ${key}: ${source1[key]}`];
   }, []);
   return [
