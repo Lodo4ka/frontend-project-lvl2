@@ -10,3 +10,5 @@
 
 #### Diff yml
 [![asciicast](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj.svg)](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj)
+#### Diff plain yml
+[![asciicast](https://asciinema.org/a/LKupnljZvlNRO3RjU3cWCc017.svg)](https://asciinema.org/a/LKupnljZvlNRO3RjU3cWCc017)

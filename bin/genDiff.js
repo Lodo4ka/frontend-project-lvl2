@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import info from '../src/info.mjs';
+import parser from '../src/parser.mjs';
 
-info();
+parser();

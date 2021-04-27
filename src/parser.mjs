@@ -6,6 +6,7 @@ import jsonParser from './parsers/json-parser.mjs';
 import ymlParser from './parsers/yml-parser.mjs';
 import stylish from './formatter/stylish.mjs';
 import plain from './formatter/plain.mjs';
+import common from './formatter/common.mjs';
 
 export default () => {
   const program = new Command();
@@ -29,11 +30,14 @@ export default () => {
         parse = jsonParser;
       }
       const [serData1, serData2] = parse(data1, data2);
-      const { diffInfo, source1: s1, source2: s2 } = diff(serData1, serData2);
+      const diffInfo = diff(serData1, serData2);
       if (formatStylish === 'stylish') {
-        console.log(stylish(diffInfo, s1, s2));
+        console.log(stylish(diffInfo));
+      }
+      if (formatStylish === 'plain') {
+        console.log(plain(diffInfo));
       } else {
-        console.log(plain(diffInfo, s1, s2));
+        console.log(common(diffInfo));
       }
     })
     .parse(process.argv)

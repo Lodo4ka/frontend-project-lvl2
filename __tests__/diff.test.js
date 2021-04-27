@@ -25,23 +25,23 @@ beforeAll(() => {
   answerPlainNested = readFile('plainNestedAnswer.txt');
 });
 
-// test('compare two plain json', () => {
-//   const file1 = readFile('ex1.json');
-//   const file2 = readFile('ex2.json');
-//   const [serData1, serData2] = jsonParser(file1, file2);
-//   const diffInfo = diff(serData1, serData2);
-//   const result = common(diffInfo);
-//   expect(result).toEqual(asnwerPlain);
-// });
+test('compare two plain json', () => {
+  const file1 = readFile('ex1.json');
+  const file2 = readFile('ex2.json');
+  const [serData1, serData2] = jsonParser(file1, file2);
+  const diffInfo = diff(serData1, serData2);
+  const result = common(diffInfo);
+  expect(result).toEqual(asnwerPlain);
+});
 
-// test('compare two plain yml', () => {
-//   const file1 = readFile('filepath1.yml');
-//   const file2 = readFile('filepath2.yml');
-//   const [serData1, serData2] = ymlParser(file1, file2);
-//   const diffInfo = diff(serData1, serData2);
-//   const result = common(diffInfo);
-//   expect(result).toEqual(asnwerPlain);
-// });
+test('compare two plain yml', () => {
+  const file1 = readFile('filepath1.yml');
+  const file2 = readFile('filepath2.yml');
+  const [serData1, serData2] = ymlParser(file1, file2);
+  const diffInfo = diff(serData1, serData2);
+  const result = common(diffInfo);
+  expect(result).toEqual(asnwerPlain);
+});
 
 test('compare two nested json with format stylish', () => {
   const file1 = readFile('file1.json');
@@ -52,11 +52,11 @@ test('compare two nested json with format stylish', () => {
   expect(result).toEqual(asnwerNested);
 });
 
-// test('compare two nested yml with format plain', () => {
-//   const file1 = readFile('file1y.yml');
-//   const file2 = readFile('file2y.yml');
-//   const [serData1, serData2] = ymlParser(file1, file2);
-//   const { diffInfo, source1, source2 } = diff(serData1, serData2);
-//   const result = plain(diffInfo, source1, source2);
-//   expect(result).toEqual(answerPlainNested);
-// });
+test('compare two nested yml with format plain', () => {
+  const file1 = readFile('file1y.yml');
+  const file2 = readFile('file2y.yml');
+  const [serData1, serData2] = ymlParser(file1, file2);
+  const diffInfo = diff(serData1, serData2);
+  const result = plain(diffInfo);
+  expect(result).toEqual(answerPlainNested);
+});
