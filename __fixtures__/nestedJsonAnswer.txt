@@ -1,0 +1,156 @@
+[
+  {
+    "key": "common",
+    "status": "unchanged",
+    "value": [
+      {
+        "key": "follow",
+        "status": "added",
+        "value": false
+      },
+      {
+        "key": "setting1",
+        "status": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "key": "setting2",
+        "status": "deleted",
+        "value": 200
+      },
+      {
+        "key": "setting3",
+        "status": "changed",
+        "value": [
+          true,
+          null
+        ]
+      },
+      {
+        "key": "setting4",
+        "status": "added",
+        "value": "blah blah"
+      },
+      {
+        "key": "setting5",
+        "status": "added",
+        "value": [
+          {
+            "key": "key5",
+            "status": "added",
+            "value": "value5"
+          }
+        ]
+      },
+      {
+        "key": "setting6",
+        "status": "unchanged",
+        "value": [
+          {
+            "key": "doge",
+            "status": "unchanged",
+            "value": [
+              {
+                "key": "wow",
+                "status": "changed",
+                "value": [
+                  "",
+                  "so much"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "key",
+            "status": "unchanged",
+            "value": "value"
+          },
+          {
+            "key": "ops",
+            "status": "added",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group1",
+    "status": "unchanged",
+    "value": [
+      {
+        "key": "baz",
+        "status": "changed",
+        "value": [
+          "bas",
+          "bars"
+        ]
+      },
+      {
+        "key": "foo",
+        "status": "unchanged",
+        "value": "bar"
+      },
+      {
+        "key": "nest",
+        "status": "changed",
+        "value": [
+          {
+            "key": "value"
+          },
+          "str"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group2",
+    "status": "deleted",
+    "value": [
+      {
+        "key": "abc",
+        "status": "deleted",
+        "value": 12345
+      },
+      {
+        "key": "deep",
+        "status": "deleted",
+        "value": [
+          {
+            "key": "id",
+            "status": "deleted",
+            "value": 45
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group3",
+    "status": "added",
+    "value": [
+      {
+        "key": "deep",
+        "status": "added",
+        "value": [
+          {
+            "key": "id",
+            "status": "added",
+            "value": [
+              {
+                "key": "number",
+                "status": "added",
+                "value": 45
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "fee",
+        "status": "added",
+        "value": 100500
+      }
+    ]
+  }
+]

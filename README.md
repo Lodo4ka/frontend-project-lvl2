@@ -10,5 +10,8 @@
 
 #### Diff yml
 [![asciicast](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj.svg)](https://asciinema.org/a/zKcPZpPCLPLOeQScF76LEYMaj)
-#### Diff plain yml
+#### Diff plain yml with plain formatter
 [![asciicast](https://asciinema.org/a/LKupnljZvlNRO3RjU3cWCc017.svg)](https://asciinema.org/a/LKupnljZvlNRO3RjU3cWCc017)
+
+#### Diff plain yml with json formatter
+[![asciicast](https://asciinema.org/a/OuQYS8IWnhcMtmgCxccQlIm30.svg)](https://asciinema.org/a/OuQYS8IWnhcMtmgCxccQlIm30)
