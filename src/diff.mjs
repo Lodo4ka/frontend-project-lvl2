@@ -11,6 +11,7 @@ export default (source1, source2) => {
   const unionKeyValues = union(keyValues1, keyValues2);
 
   const setUniqueByKey = (collection) => uniqBy(collection, (item) => (has(item, 'key') ? item.key : item));
+
   const sortByKey = (collection) => sortBy(collection, (item) => (has(item, 'key') && item.key))
     .map((item) => (isObject(item) ? ({
       ...item,
@@ -54,8 +55,11 @@ export default (source1, source2) => {
         value: getValue(source1, currentKey),
       };
     });
-    return setUniqueByKey(iter(ast, [])
-      .reduce((acc, elem) => {
+
+    const treeAst = iter(ast, []);
+
+    const accumulateDiff = () => {
+      const innerDiff = treeAst.reduce((acc, elem) => {
         const [findElem] = acc.filter((a) => a.key === elem.key);
         return findElem
           ? acc.map((a) => (a.key === findElem.key
@@ -66,11 +70,14 @@ export default (source1, source2) => {
             } : a))
           : [...acc, elem];
       },
-      []));
+      []);
+      return setUniqueByKey(innerDiff);
+    };
+
+    return accumulateDiff(treeAst);
   };
 
   const ast = generateAstDiff(unionKeyValues);
 
-  const sortDiffInfo = sortByKey(ast);
-  return sortDiffInfo;
+  return sortByKey(ast);
 };
