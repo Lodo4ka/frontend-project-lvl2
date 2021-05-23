@@ -1,8 +1,12 @@
 import {
   union, isEqual, has, isObject, get, sortBy, uniqBy,
 } from 'lodash-es';
+import stylishFormatter from './formatter/stylish.mjs';
+import plainFormatter from './formatter/plain.mjs';
+import commonFormatter from './formatter/common.mjs';
+import jsonFormatter from './formatter/json.mjs';
 
-export default (source1, source2) => {
+export default (source1, source2, choisesFormatter) => {
   if (isEqual(source1, source2)) {
     return source2;
   }
@@ -79,5 +83,15 @@ export default (source1, source2) => {
 
   const ast = generateAstDiff(unionKeyValues);
 
-  return sortByKey(ast);
+  const sortAst = sortByKey(ast);
+  if (choisesFormatter === 'stylish') {
+    return stylishFormatter(sortAst);
+  }
+  if (choisesFormatter === 'plain') {
+    return plainFormatter(sortAst);
+  }
+  if (choisesFormatter === 'json') {
+    return jsonFormatter(sortAst);
+  }
+  return commonFormatter(sortAst);
 };

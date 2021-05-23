@@ -4,10 +4,6 @@ import fs from 'fs';
 import diff from './diff.mjs';
 import jsonParser from './parsers/json-parser.mjs';
 import ymlParser from './parsers/yml-parser.mjs';
-import stylishFormatter from './formatter/stylish.mjs';
-import plainFormatter from './formatter/plain.mjs';
-import commonFormatter from './formatter/common.mjs';
-import jsonFormatter from './formatter/json.mjs';
 
 export default () => {
   const program = new Command();
@@ -15,7 +11,7 @@ export default () => {
   program
     .version('0.0.1', '-v, --vers', 'output the current version')
     .arguments('<source1> <source2>')
-    .option('-f, --format [type]', 'output format', 'stylishFormatter')
+    .option('-f, --format [type]', 'output format', 'stylish, plain, common, json')
     .action((source1, source2) => {
       const opts = program.opts();
       const choisesFormatter = opts.format;
@@ -31,18 +27,8 @@ export default () => {
         parse = jsonParser;
       }
       const [serData1, serData2] = parse(data1, data2);
-      const diffInfo = diff(serData1, serData2);
-      if (choisesFormatter === 'stylishFormatter') {
-        console.log(stylishFormatter(diffInfo));
-      }
-      if (choisesFormatter === 'plainFormatter') {
-        console.log(plainFormatter(diffInfo));
-      }
-      if (choisesFormatter === 'json') {
-        console.log(jsonFormatter(diffInfo));
-      } else {
-        console.log(commonFormatter(diffInfo));
-      }
+      const result = diff(serData1, serData2, choisesFormatter);
+      console.log(result);
     })
     .parse(process.argv)
     .opts();

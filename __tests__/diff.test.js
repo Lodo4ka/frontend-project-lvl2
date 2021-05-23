@@ -5,10 +5,6 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import diff from '../src/diff.mjs';
-import plainFormatter from '../src/formatter/plain.mjs';
-import stylishFormatter from '../src/formatter/stylish.mjs';
-import commonFormatter from '../src/formatter/common.mjs';
-import jsonFormatter from '../src/formatter/json.mjs';
 import jsonParser from '../src/parsers/json-parser.mjs';
 import ymlParser from '../src/parsers/yml-parser.mjs';
 
@@ -35,8 +31,7 @@ describe('check parser with all formatters', () => {
     const file1 = readFile('ex1.json');
     const file2 = readFile('ex2.json');
     const [serData1, serData2] = jsonParser(file1, file2);
-    const diffInfo = diff(serData1, serData2);
-    const result = commonFormatter(diffInfo);
+    const result = diff(serData1, serData2, 'common');
     expect(result).toEqual(asnwerPlain);
   });
 
@@ -44,8 +39,7 @@ describe('check parser with all formatters', () => {
     const file1 = readFile('filepath1.yml');
     const file2 = readFile('filepath2.yml');
     const [serData1, serData2] = ymlParser(file1, file2);
-    const diffInfo = diff(serData1, serData2);
-    const result = commonFormatter(diffInfo);
+    const result = diff(serData1, serData2, 'common');
     expect(result).toEqual(asnwerPlain);
   });
 
@@ -53,8 +47,7 @@ describe('check parser with all formatters', () => {
     const file1 = readFile('file1.json');
     const file2 = readFile('file2.json');
     const [serData1, serData2] = jsonParser(file1, file2);
-    const diffInfo = diff(serData1, serData2);
-    const result = stylishFormatter(diffInfo);
+    const result = diff(serData1, serData2, 'stylish');
     expect(result).toEqual(asnwerNested);
   });
 
@@ -62,8 +55,7 @@ describe('check parser with all formatters', () => {
     const file1 = readFile('file1y.yml');
     const file2 = readFile('file2y.yml');
     const [serData1, serData2] = ymlParser(file1, file2);
-    const diffInfo = diff(serData1, serData2);
-    const result = plainFormatter(diffInfo);
+    const result = diff(serData1, serData2, 'plain');
     expect(result).toEqual(answerPlainNested);
   });
 
@@ -71,8 +63,7 @@ describe('check parser with all formatters', () => {
     const file1 = readFile('file1y.yml');
     const file2 = readFile('file2y.yml');
     const [serData1, serData2] = ymlParser(file1, file2);
-    const diffInfo = diff(serData1, serData2);
-    const result = jsonFormatter(diffInfo);
+    const result = diff(serData1, serData2, 'json');
     expect(result).toEqual(nestedJsonAnswer);
   });
 });
