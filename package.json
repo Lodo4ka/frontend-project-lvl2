@@ -12,7 +12,7 @@
     "url": "git+https://github.com/Lodo4ka/frontend-project-lvl2.git"
   },
   "bin": {
-    "genDiff": "bin/genDiff.js"
+    "genDiff": "./bin/genDiff.js"
   },
   "author": "",
   "engines": {

@@ -6,7 +6,7 @@ import plainFormatter from './formatter/plain.mjs';
 import commonFormatter from './formatter/common.mjs';
 import jsonFormatter from './formatter/json.mjs';
 
-export default (source1, source2, choisesFormatter) => {
+export default (source1, source2, choisesFormatter = 'stylish') => {
   if (isEqual(source1, source2)) {
     return source2;
   }

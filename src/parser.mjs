@@ -11,7 +11,7 @@ export default () => {
   program
     .version('0.0.1', '-v, --vers', 'output the current version')
     .arguments('<source1> <source2>')
-    .option('-f, --format [type]', 'output format', 'stylish, plain, common, json')
+    .option('-f, --format [type]', 'output format, values: stylish, plain, common, json', 'stylish')
     .action((source1, source2) => {
       const opts = program.opts();
       const choisesFormatter = opts.format;
