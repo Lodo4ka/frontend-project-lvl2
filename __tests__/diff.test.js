@@ -5,8 +5,6 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import diff from '../src/diff.mjs';
-import jsonParser from '../src/parsers/json-parser.mjs';
-import ymlParser from '../src/parsers/yml-parser.mjs';
 
 const __filename = fileURLToPath((import.meta.url));
 const __dirname = dirname(__filename);
@@ -28,42 +26,37 @@ describe('check parser with all formatters', () => {
   });
 
   test('compare two plain json', () => {
-    const file1 = readFile('ex1.json');
-    const file2 = readFile('ex2.json');
-    const [serData1, serData2] = jsonParser(file1, file2);
-    const result = diff(serData1, serData2, 'common');
+    const file1 = getFixturePath('ex1.json');
+    const file2 = getFixturePath('ex2.json');
+    const result = diff(file1, file2, 'common');
     expect(result).toEqual(asnwerPlain);
   });
 
   test('compare two plain yml', () => {
-    const file1 = readFile('filepath1.yml');
-    const file2 = readFile('filepath2.yml');
-    const [serData1, serData2] = ymlParser(file1, file2);
-    const result = diff(serData1, serData2, 'common');
+    const file1 = getFixturePath('filepath1.yml');
+    const file2 = getFixturePath('filepath2.yml');
+    const result = diff(file1, file2, 'common');
     expect(result).toEqual(asnwerPlain);
   });
 
   test('compare two nested json with format stylishFormatter', () => {
-    const file1 = readFile('file1.json');
-    const file2 = readFile('file2.json');
-    const [serData1, serData2] = jsonParser(file1, file2);
-    const result = diff(serData1, serData2, 'stylish');
+    const file1 = getFixturePath('file1.json');
+    const file2 = getFixturePath('file2.json');
+    const result = diff(file1, file2, 'stylish');
     expect(result).toEqual(asnwerNested);
   });
 
   test('compare two nested yml with format plain', () => {
-    const file1 = readFile('file1y.yml');
-    const file2 = readFile('file2y.yml');
-    const [serData1, serData2] = ymlParser(file1, file2);
-    const result = diff(serData1, serData2, 'plain');
+    const file1 = getFixturePath('file1y.yml');
+    const file2 = getFixturePath('file2y.yml');
+    const result = diff(file1, file2, 'plain');
     expect(result).toEqual(answerPlainNested);
   });
 
   test('compare two nested yml with format json', () => {
-    const file1 = readFile('file1y.yml');
-    const file2 = readFile('file2y.yml');
-    const [serData1, serData2] = ymlParser(file1, file2);
-    const result = diff(serData1, serData2, 'json');
+    const file1 = getFixturePath('file1y.yml');
+    const file2 = getFixturePath('file2y.yml');
+    const result = diff(file1, file2, 'json');
     expect(result).toEqual(nestedJsonAnswer);
   });
 });

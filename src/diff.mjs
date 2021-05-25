@@ -1,12 +1,28 @@
+import fs from 'fs';
+import path from 'path';
 import {
   union, isEqual, has, isObject, get, sortBy, uniqBy,
 } from 'lodash-es';
+import jsonParser from './parsers/json-parser.mjs';
+import ymlParser from './parsers/yml-parser.mjs';
 import stylishFormatter from './formatter/stylish.mjs';
 import plainFormatter from './formatter/plain.mjs';
 import commonFormatter from './formatter/common.mjs';
 import jsonFormatter from './formatter/json.mjs';
 
-export default (source1, source2, choisesFormatter = 'stylish') => {
+export default (path1, path2, choisesFormatter = 'stylish') => {
+  const data1 = fs.readFileSync(path1, { encoding: 'utf8', flag: 'r' });
+  const data2 = fs.readFileSync(path2, { encoding: 'utf8', flag: 'r' });
+
+  const format = path.extname(path1);
+  let parse;
+  if (format === '.yml') {
+    parse = ymlParser;
+  } else if (format === '.json') {
+    parse = jsonParser;
+  }
+  const [source1, source2] = parse(data1, data2);
+
   if (isEqual(source1, source2)) {
     return source2;
   }
