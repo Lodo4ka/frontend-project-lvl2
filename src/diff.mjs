@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import {
-  union, isEqual, has, isObject, get, sortBy, uniqBy,
+  union, has, isObject, get, keys,
 } from 'lodash-es';
 import jsonParser from './parsers/json-parser.mjs';
 import ymlParser from './parsers/yml-parser.mjs';
@@ -23,91 +23,55 @@ export default (path1, path2, choisesFormatter = 'stylish') => {
   }
   const [source1, source2] = parse(data1, data2);
 
-  if (isEqual(source1, source2)) {
-    return source2;
-  }
-  const keyValues1 = Object.entries(source1);
-  const keyValues2 = Object.entries(source2);
-  const unionKeyValues = union(keyValues1, keyValues2);
-
-  const setUniqueByKey = (collection) => uniqBy(collection, (item) => (has(item, 'key') ? item.key : item));
-
-  const sortByKey = (collection) => sortBy(collection, (item) => (has(item, 'key') && item.key))
-    .map((item) => (isObject(item) ? ({
-      ...item,
-      value: Array.isArray(item.value)
-        ? sortByKey(item.value) : item.value,
-    }) : item));
-
-  const generateAstDiff = (ast) => {
-    const iter = (astIter, parent) => astIter.map(([key, value]) => {
-      const currentKey = [...parent, key].join('.');
-      const getValue = (source, currentKeyArg) => {
-        if (isObject(value)) {
-          const childrenNode = Object.entries(value);
-          return iter(childrenNode, [...parent, key]);
-        }
-        return get(source, currentKeyArg);
-      };
-      if (!has(source1, currentKey)) {
+  const generateAstDiff = (obj1, obj2) => {
+    const unionKeys = union(keys(obj1), keys(obj2));
+    return unionKeys.sort().map((key) => {
+      if (isObject(get(obj1, key)) && isObject(get(obj2, key))) {
+        return {
+          key,
+          status: 'nested',
+          value: generateAstDiff(get(obj1, key), get(obj2, key)),
+        };
+      }
+      if (!has(obj1, key)) {
         return {
           key,
           status: 'added',
-          value: getValue(source2, currentKey),
+          value: get(obj2, key),
         };
-      } if (!has(source2, currentKey)) {
+      }
+      if (!has(obj2, key)) {
         return {
           key,
           status: 'deleted',
-          value: getValue(source1, currentKey),
+          value: get(obj1, key),
         };
-      } if (get(source1, currentKey) !== get(source2, currentKey)
-          && !isObject(value)) {
+      }
+      if (get(obj1, key) !== get(obj2, key)) {
         return {
           key,
           status: 'changed',
-          value: [getValue(source1, currentKey), getValue(source2, currentKey)],
+          value: [get(obj1, key), get(obj2, key)],
         };
       }
       return {
         key,
         status: 'unchanged',
-        value: getValue(source1, currentKey),
+        value: get(obj1, key),
       };
     });
-
-    const treeAst = iter(ast, []);
-
-    const accumulateDiff = () => {
-      const innerDiff = treeAst.reduce((acc, elem) => {
-        const [findElem] = acc.filter((a) => a.key === elem.key);
-        return findElem
-          ? acc.map((a) => (a.key === findElem.key
-            && isObject(elem.value)
-            ? {
-              ...a,
-              value: setUniqueByKey([...elem.value, ...a.value]),
-            } : a))
-          : [...acc, elem];
-      },
-      []);
-      return setUniqueByKey(innerDiff);
-    };
-
-    return accumulateDiff(treeAst);
   };
 
-  const ast = generateAstDiff(unionKeyValues);
+  const ast = generateAstDiff(source1, source2);
 
-  const sortAst = sortByKey(ast);
   if (choisesFormatter === 'stylish') {
-    return stylishFormatter(sortAst);
+    return stylishFormatter(ast);
   }
   if (choisesFormatter === 'plain') {
-    return plainFormatter(sortAst);
+    return plainFormatter(ast);
   }
   if (choisesFormatter === 'json') {
-    return jsonFormatter(sortAst);
+    return jsonFormatter(ast);
   }
-  return commonFormatter(sortAst);
+  return commonFormatter(ast);
 };
