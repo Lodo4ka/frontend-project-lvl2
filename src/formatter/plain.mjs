@@ -2,20 +2,22 @@ import {
   isObject, has, isString, compact,
 } from 'lodash-es';
 
+const getValue = (valueArg) => {
+  if (isObject(valueArg)) {
+    return '[complex value]';
+  }
+  if (isString(valueArg)) {
+    return `'${valueArg}'`;
+  }
+  return valueArg;
+};
+
 export default (diffInfo) => {
   const isNestedNode = (children) => isObject(children) && has(children[0], 'key');
 
   const plainNestedLines = (diff, parent) => compact(diff.flatMap(({ key, status, value }) => {
     const currentKey = [...parent, key].join('.');
-    const getValue = (valueArg) => {
-      if (isObject(valueArg)) {
-        return '[complex value]';
-      }
-      if (isString(valueArg)) {
-        return `'${valueArg}'`;
-      }
-      return valueArg;
-    };
+
     if (status === 'added') {
       return `Property '${currentKey}' was added with value: ${getValue(value)}`;
     }

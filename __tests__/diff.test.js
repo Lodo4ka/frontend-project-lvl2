@@ -20,10 +20,10 @@ let nestedJsonAnswerCi;
 
 describe('check parser with all formatters', () => {
   beforeAll(() => {
-    asnwerPlain = readFile('plainAnswer.txt');
-    asnwerNested = readFile('nestedAnswer.txt');
-    answerPlainNested = readFile('plainNestedAnswer.txt');
-    nestedJsonAnswer = readFile('nestedJsonAnswer.txt');
+    // asnwerPlain = readFile('plainAnswer.txt');
+    // asnwerNested = readFile('nestedAnswer.txt');
+    // answerPlainNested = readFile('plainNestedAnswer.txt');
+    // nestedJsonAnswer = readFile('nestedJsonAnswer.txt');
     nestedJsonAnswerCi = readFile('result_stylish_ci.txt');
   });
 

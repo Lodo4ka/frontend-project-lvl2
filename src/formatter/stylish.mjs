@@ -3,35 +3,41 @@ import {
 } from 'lodash-es';
 import { replacer, spaceCount } from '../common/constants.mjs';
 
+const renderSpaces = (depth) => replacer.repeat(depth * spaceCount);
+
+const getValue = (value, depth) => {
+  if (!isObject(value)) {
+    return value;
+  }
+  const representation = Object.entries(value)
+    .map(
+      ([keyNode, valueNode]) => `${renderSpaces(depth + 1)}${keyNode}: ${getValue(valueNode, depth + 2)}`,
+    );
+  return [
+    '{',
+    ...representation,
+    `${renderSpaces(depth - 1)}}`,
+  ].join('\n');
+};
+
 export default (diffInfo) => {
   const createStylishLines = (diff, depth) => diff.flatMap(({ key, status, value }) => {
-    const indentSize = depth * spaceCount;
-    const elemeIndent = replacer.repeat((indentSize));
-    const bracketIndent = replacer.repeat(indentSize + 2);
-    const nestedNodeIndent = replacer.repeat(indentSize + 5);
-
-    const getValue = (valueArg) => {
-      if (isObject(valueArg)) {
-        return Object.entries(valueArg)
-          .flatMap(([keyNode, valueNode]) => ['{', `${nestedNodeIndent} ${keyNode}: ${getValue(valueNode)}`, `${bracketIndent}}`])
-          .join('\n');
-      }
-      return valueArg;
-    };
-
     if (status === 'nested') {
-      return [`${elemeIndent}  ${key}: {`, ...createStylishLines(value, depth + 2), `${bracketIndent}}`];
+      return [`${renderSpaces(depth)}  ${key}: {`, ...createStylishLines(value, depth + 2), `${renderSpaces(depth + 1)}}`];
     }
     if (status === 'added') {
-      return [`${elemeIndent}+ ${key}: ${getValue(value)}`];
+      return [`${renderSpaces(depth)}+ ${key}: ${`${getValue(value, depth + 2)}`}`];
     }
     if (status === 'deleted') {
-      return [`${elemeIndent}- ${key}: ${getValue(value)}`];
+      return [`${renderSpaces(depth)}- ${key}: ${`${getValue(value, depth + 2)}`}`];
     }
     if (status === 'changed') {
-      return [`${elemeIndent}- ${key}: ${getValue(value[0])}`, `${elemeIndent}+ ${key}: ${getValue(value[1])}`];
+      return [
+        `${renderSpaces(depth)}- ${key}: ${`${getValue(value[0], depth + 2)}`}`,
+        `${renderSpaces(depth)}+ ${key}: ${`${getValue(value[1], depth + 2)}`}`,
+      ];
     }
-    return [`${elemeIndent}  ${key}: ${getValue(value)}`];
+    return [`${renderSpaces(depth)}  ${key}: ${`${getValue(value, depth + 2)}`}`];
   });
   const lines = createStylishLines(diffInfo, 1);
   return [
