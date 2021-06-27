@@ -31,5 +31,5 @@ export default (diffInfo) => {
     return null;
   }));
   const lines = plainNestedLines(diffInfo, []);
-  return [...lines, ''].join('\n');
+  return lines.join('\n');
 };
