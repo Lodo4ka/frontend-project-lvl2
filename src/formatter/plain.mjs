@@ -25,11 +25,11 @@ export default (diffInfo) => {
       return `Property '${currentKey}' was removed`;
     }
     if (status === 'changed') {
-      return `Property '${currentKey}' was updated. From ${getValue(value[0])} to ${getValue(value[1])}`;
+      return `Property '${currentKey}' was updated. From ${getValue(value.oldValue)} to ${getValue(value.newValue)}`;
     }
     if (isNestedNode(value)) { return plainNestedLines(value, [...parent, key]); }
     return null;
   }));
   const lines = plainNestedLines(diffInfo, []);
-  return lines.join('\n');
+  return [...lines, ''].join('\n');
 };

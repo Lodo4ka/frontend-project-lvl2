@@ -12,7 +12,7 @@ export default (diffInfo) => {
       return `${elemeIndent}- ${key}: ${value}`;
     }
     if (status === 'changed') {
-      return [`${elemeIndent}- ${key}: ${value[0]}`, `${elemeIndent}+ ${key}: ${value[1]}`];
+      return [`${elemeIndent}- ${key}: ${value.oldValue}`, `${elemeIndent}+ ${key}: ${value.newValue}`];
     }
     return `${elemeIndent}  ${key}: ${value}`;
   });
