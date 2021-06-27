@@ -44,6 +44,5 @@ export default (diffInfo) => {
     '{',
     ...lines,
     '}',
-    '',
   ].join('\n');
 };
