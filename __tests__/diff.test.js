@@ -12,35 +12,26 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-let asnwerPlain;
-let asnwerNested;
-let answerPlainNested;
-let nestedJsonAnswer;
-let nestedAnswerCI;
-let plainNestedCI;
-
 describe('check parser with all formatters', () => {
-  beforeAll(() => {
-    asnwerPlain = readFile('plainAnswer.txt');
-    asnwerNested = readFile('nestedAnswer.txt');
-    answerPlainNested = readFile('plainNestedAnswer.txt');
-    nestedJsonAnswer = readFile('nestedJsonAnswer.txt');
-    nestedAnswerCI = readFile('result_stylish_ci.txt');
-    plainNestedCI = readFile('result_plain_ci.txt');
-  });
+  const answerPlain = readFile('plainAnswer.txt');
+  const asnwerNested = readFile('nestedAnswer.txt');
+  const answerPlainNested = readFile('plainNestedAnswer.txt');
+  const nestedJsonAnswer = readFile('nestedJsonAnswer.txt');
+  const nestedAnswerCI = readFile('result_stylish_ci.txt');
+  const plainNestedCI = readFile('result_plain_ci.txt');
 
   test('compare two plain json', () => {
     const file1 = getFixturePath('ex1.json');
     const file2 = getFixturePath('ex2.json');
     const result = diff(file1, file2, 'common');
-    expect(result).toEqual(asnwerPlain);
+    expect(result).toEqual(answerPlain);
   });
 
   test('compare two plain yml', () => {
     const file1 = getFixturePath('filepath1.yml');
     const file2 = getFixturePath('filepath2.yml');
     const result = diff(file1, file2, 'common');
-    expect(result).toEqual(asnwerPlain);
+    expect(result).toEqual(answerPlain);
   });
 
   test('compare two nested json with format stylishFormatter', () => {
