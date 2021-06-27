@@ -51,7 +51,7 @@ export default (path1, path2, choisesFormatter = 'stylish') => {
         return {
           key,
           status: 'changed',
-          value: [get(obj1, key), get(obj2, key)],
+          value: { oldValue: get(obj1, key), newValue: get(obj2, key) },
         };
       }
       return {

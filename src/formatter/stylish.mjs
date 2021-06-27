@@ -33,8 +33,8 @@ export default (diffInfo) => {
     }
     if (status === 'changed') {
       return [
-        `${renderSpaces(depth)}- ${key}: ${`${getValue(value[0], depth + 2)}`}`,
-        `${renderSpaces(depth)}+ ${key}: ${`${getValue(value[1], depth + 2)}`}`,
+        `${renderSpaces(depth)}- ${key}: ${`${getValue(value.oldValue, depth + 2)}`}`,
+        `${renderSpaces(depth)}+ ${key}: ${`${getValue(value.newValue, depth + 2)}`}`,
       ];
     }
     return [`${renderSpaces(depth)}  ${key}: ${`${getValue(value, depth + 2)}`}`];
