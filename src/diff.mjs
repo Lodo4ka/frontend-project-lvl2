@@ -1,25 +1,14 @@
 import fs from 'fs';
-import path from 'path';
 import {
   union, has, isObject, get, keys,
 } from 'lodash-es';
-import jsonParser from './parsers/json-parser.mjs';
-import ymlParser from './parsers/yml-parser.mjs';
-import stylishFormatter from './formatter/stylish.mjs';
-import plainFormatter from './formatter/plain.mjs';
-import jsonFormatter from './formatter/json.mjs';
+import getParsers from './parsers/index.js';
+import getFormatter from './formatter/index.js';
 
 export default (path1, path2, choisesFormatter = 'stylish') => {
   const data1 = fs.readFileSync(path1, { encoding: 'utf8', flag: 'r' });
   const data2 = fs.readFileSync(path2, { encoding: 'utf8', flag: 'r' });
-
-  const format = path.extname(path1);
-  let parse;
-  if (format === '.yml') {
-    parse = ymlParser;
-  } else if (format === '.json') {
-    parse = jsonParser;
-  }
+  const parse = getParsers(path1);
   const [source1, source2] = parse(data1, data2);
 
   const generateAstDiff = (obj1, obj2) => {
@@ -62,12 +51,6 @@ export default (path1, path2, choisesFormatter = 'stylish') => {
   };
 
   const ast = generateAstDiff(source1, source2);
-
-  const mapFormatted = {
-    stylish: (astArg) => stylishFormatter(astArg),
-    plain: (astArg) => plainFormatter(astArg),
-    json: (astArg) => jsonFormatter(astArg),
-  };
-
-  return mapFormatted[choisesFormatter](ast);
+  const formatter = getFormatter(choisesFormatter);
+  return formatter(ast);
 };
