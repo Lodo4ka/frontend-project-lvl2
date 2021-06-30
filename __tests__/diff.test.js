@@ -20,13 +20,6 @@ describe('check parser with all formatters', () => {
   const nestedAnswerCI = readFile('result_stylish_ci.txt');
   const plainNestedCI = readFile('result_plain_ci.txt');
 
-  test('compare two plain json', () => {
-    const file1 = getFixturePath('ex1.json');
-    const file2 = getFixturePath('ex2.json');
-    const result = diff(file1, file2, 'common');
-    expect(result).toEqual(answerPlain);
-  });
-
   test('compare two nested json with format stylishFormatter', () => {
     const file1 = getFixturePath('file1.json');
     const file2 = getFixturePath('file2.json');
@@ -46,13 +39,6 @@ describe('check parser with all formatters', () => {
     const file2 = getFixturePath('file2_ci.json');
     const result = diff(file1, file2, 'plain');
     expect(result).toEqual(plainNestedCI);
-  });
-
-  test('compare two plain yml', () => {
-    const file1 = getFixturePath('filepath1.yml');
-    const file2 = getFixturePath('filepath2.yml');
-    const result = diff(file1, file2, 'common');
-    expect(result).toEqual(answerPlain);
   });
 
   test('compare two nested yml with format plain', () => {

@@ -64,14 +64,11 @@ export default (path1, path2, choisesFormatter = 'stylish') => {
 
   const ast = generateAstDiff(source1, source2);
 
-  if (choisesFormatter === 'stylish') {
-    return stylishFormatter(ast);
-  }
-  if (choisesFormatter === 'plain') {
-    return plainFormatter(ast);
-  }
-  if (choisesFormatter === 'json') {
-    return jsonFormatter(ast);
-  }
-  return commonFormatter(ast);
+  const mapFormatted = {
+    stylish: (astArg) => stylishFormatter(astArg),
+    plain: (astArg) => plainFormatter(astArg),
+    json: (astArg) => jsonFormatter(astArg),
+  };
+
+  return mapFormatted[choisesFormatter](ast);
 };
