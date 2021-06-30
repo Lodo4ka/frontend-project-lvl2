@@ -1,8 +1,9 @@
 import {
   isObject,
 } from 'lodash-es';
-import { replacer, spaceCount } from '../common/constants.mjs';
 
+const replacer = ' ';
+const spaceCount = 2;
 const renderSpaces = (depth) => replacer.repeat(depth * spaceCount);
 
 const getValue = (value, depth) => {

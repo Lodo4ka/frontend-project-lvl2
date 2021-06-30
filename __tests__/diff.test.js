@@ -13,7 +13,6 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 describe('check parser with all formatters', () => {
-  const answerPlain = readFile('plainAnswer.txt');
   const asnwerNested = readFile('nestedAnswer.txt');
   const answerPlainNested = readFile('plainNestedAnswer.txt');
   const nestedJsonAnswer = readFile('nestedJsonAnswer.txt');

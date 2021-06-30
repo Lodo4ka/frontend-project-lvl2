@@ -7,7 +7,6 @@ import jsonParser from './parsers/json-parser.mjs';
 import ymlParser from './parsers/yml-parser.mjs';
 import stylishFormatter from './formatter/stylish.mjs';
 import plainFormatter from './formatter/plain.mjs';
-import commonFormatter from './formatter/common.mjs';
 import jsonFormatter from './formatter/json.mjs';
 
 export default (path1, path2, choisesFormatter = 'stylish') => {
