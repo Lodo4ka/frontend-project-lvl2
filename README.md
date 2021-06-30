@@ -5,6 +5,16 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 
+## Installation
+```sudo npm install gendiff```
+
+## Usage
+```gendiff [options] <pathToFile1> <pathToFile2>```
+
+Options:
+`-V, --version` output the version number
+`-f, --format [type]` Output format
+`-h, --help` output usage information
 #### Diff json
 [![asciicast](https://asciinema.org/a/NpiOweYX7c1T7Wufoh8AV9Yp4.svg)](https://asciinema.org/a/NpiOweYX7c1T7Wufoh8AV9Yp4)
 

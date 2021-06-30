@@ -1,5 +1,5 @@
 {
-  "name": "@hexlet/code",
+  "name": "gendiff",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Lodo4ka/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/Lodo4ka/frontend-project-lvl2/actions)",
   "main": "./src/diff.mjs",
