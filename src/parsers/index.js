@@ -1,15 +1,12 @@
-import path from 'path';
-
 import jsonParser from './json-parser.mjs';
 import ymlParser from './yml-parser.mjs';
 
-const getParsers = (pathFile) => {
-  const format = path.extname(pathFile);
-  const mapParser = {
-    '.yml': ymlParser,
-    '.json': jsonParser,
+const getParser = (typeFormatter) => {
+  const parsers = {
+    yml: ymlParser,
+    json: jsonParser,
   };
-  return mapParser[format];
+  return parsers[typeFormatter];
 };
 
-export default getParsers;
+export default getParser;
