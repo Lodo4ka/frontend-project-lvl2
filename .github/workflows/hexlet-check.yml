@@ -26,7 +26,6 @@ jobs:
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
   coverage:
-    needs: [ test ]
     name: coverage
     runs-on: ubuntu-latest
     steps:
