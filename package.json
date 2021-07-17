@@ -5,7 +5,8 @@
   "main": "./src/diff.mjs",
   "scripts": {
     "test": "jest --bail",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "test-coverage": "jest --collectCoverage"
   },
   "repository": {
     "type": "git",
