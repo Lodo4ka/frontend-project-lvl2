@@ -29,12 +29,9 @@ jobs:
     name: coverage
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@master
-      with:
-        node-version: '12'
-    - uses: paambaati/codeclimate-action@v2.2.4
+    - uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: 3b511294aeed74465a61aab61d991e75a0a6b290611240702b609f9cf30d5d07
       with:
         coverageCommand: npm run coverage
+        debug: true
