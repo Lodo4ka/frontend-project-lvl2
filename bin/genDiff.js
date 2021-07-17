@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import path from 'path';
-import diff from '../src/diff.mjs';
+import diff from '../src/diff.js';
 
 const program = new Command();
 

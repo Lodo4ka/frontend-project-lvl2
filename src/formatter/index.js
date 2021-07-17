@@ -1,6 +1,6 @@
-import stylishFormatter from './stylish.mjs';
-import plainFormatter from './plain.mjs';
-import jsonFormatter from './json.mjs';
+import stylishFormatter from './stylish.js';
+import plainFormatter from './plain.js';
+import jsonFormatter from './json.js';
 
 const getFormatter = (choisesFormatter) => {
   const mapFormatter = {

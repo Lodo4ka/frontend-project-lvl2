@@ -1,5 +1,5 @@
-import jsonParser from './json-parser.mjs';
-import ymlParser from './yml-parser.mjs';
+import jsonParser from './json-parser.js';
+import ymlParser from './yml-parser.js';
 
 const getParser = (typeFormatter) => {
   const parsers = {
