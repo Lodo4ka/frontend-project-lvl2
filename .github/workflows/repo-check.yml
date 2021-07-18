@@ -8,36 +8,23 @@ on:
       - '**'
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@master
-    - uses: actions/setup-node@master
-      with:
-          node-version: '14'
-    - run: npm ci
-    - run: npm test
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: stefanoeb/eslint-action@1.0.2
-      with:
-        files:
-          src/
-  coverage:
-    needs: [ test ]
-    name: coverage
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@master
+    - name: Use node js
+      uses: actions/setup-node@master
       with:
         node-version: '14'
-    - run: npm install
-    - uses: paambaati/codeclimate-action@v2.7.5
+    - name: install dependencies
+      run: make install
+    - name: lint
+      run: make lint
+    - name: test & coverage
+      uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
       with:
-        coverageCommand: npm run test-coverage
+        coverageCommand: make test-coverage
         debug: true
