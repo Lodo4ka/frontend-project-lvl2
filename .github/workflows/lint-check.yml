@@ -17,5 +17,9 @@ jobs:
       uses: actions/setup-node@master
       with:
         node-version: '14'
+    - name: Install dependencies
+      run: make install
+      with:
+        node-version: '14'
     - name: Run linter
       run: make lint
