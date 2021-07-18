@@ -6,13 +6,13 @@ const replacer = ' ';
 const spaceCount = 2;
 const renderSpaces = (depth) => replacer.repeat(depth * spaceCount);
 
-const getValue = (value, depth) => {
+const renderValue = (value, depth) => {
   if (!isObject(value)) {
     return value;
   }
   const representation = Object.entries(value)
     .map(
-      ([keyNode, valueNode]) => `${renderSpaces(depth + 1)}${keyNode}: ${getValue(valueNode, depth + 2)}`,
+      ([keyNode, valueNode]) => `${renderSpaces(depth + 1)}${keyNode}: ${renderValue(valueNode, depth + 2)}`,
     );
   return [
     '{',
@@ -27,18 +27,18 @@ export default (diff) => {
       return [`${renderSpaces(depth)}  ${key}: {`, ...createStylishLines(value, depth + 2), `${renderSpaces(depth + 1)}}`];
     }
     if (status === 'added') {
-      return [`${renderSpaces(depth)}+ ${key}: ${`${getValue(value, depth + 2)}`}`];
+      return [`${renderSpaces(depth)}+ ${key}: ${renderValue(value, depth + 2)}`];
     }
     if (status === 'deleted') {
-      return [`${renderSpaces(depth)}- ${key}: ${`${getValue(value, depth + 2)}`}`];
+      return [`${renderSpaces(depth)}- ${key}: ${renderValue(value, depth + 2)}`];
     }
     if (status === 'changed') {
       return [
-        `${renderSpaces(depth)}- ${key}: ${`${getValue(value.oldValue, depth + 2)}`}`,
-        `${renderSpaces(depth)}+ ${key}: ${`${getValue(value.newValue, depth + 2)}`}`,
+        `${renderSpaces(depth)}- ${key}: ${renderValue(value.oldValue, depth + 2)}`,
+        `${renderSpaces(depth)}+ ${key}: ${renderValue(value.newValue, depth + 2)}`,
       ];
     }
-    return [`${renderSpaces(depth)}  ${key}: ${`${getValue(value, depth + 2)}`}`];
+    return [`${renderSpaces(depth)}  ${key}: ${renderValue(value, depth + 2)}`];
   });
   const lines = createStylishLines(diff, 1);
   return [
