@@ -17,11 +17,11 @@ jobs:
       uses: actions/setup-node@master
       with:
         node-version: '14'
-    - name: install dependencies
+    - name: Install dependencies
       run: make install
-    - name: lint
+    - name: Run linter
       run: make lint
-    - name: test & coverage
+    - name: Test & coverage
       uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
