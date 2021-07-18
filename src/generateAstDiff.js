@@ -1,5 +1,5 @@
 import {
-  union, has, isObject, get, keys, sortBy,
+  union, has, isObject, get, keys, sortBy, isEqual,
 } from 'lodash-es';
 
 const generateAstDiff = (obj1, obj2) => {
@@ -26,7 +26,7 @@ const generateAstDiff = (obj1, obj2) => {
         value: get(obj1, key),
       };
     }
-    if (get(obj1, key) !== get(obj2, key)) {
+    if (!isEqual(get(obj1, key), get(obj2, key))) {
       return {
         key,
         status: 'changed',
