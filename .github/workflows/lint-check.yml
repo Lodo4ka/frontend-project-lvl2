@@ -1,0 +1,21 @@
+name: Linter
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Use node js
+      uses: actions/setup-node@master
+      with:
+        node-version: '14'
+    - name: Run linter
+      run: make lint

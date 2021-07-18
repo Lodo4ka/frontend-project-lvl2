@@ -1,4 +1,4 @@
-name: repo-check
+name: build-check
 
 on:
   push:
@@ -19,8 +19,6 @@ jobs:
         node-version: '14'
     - name: Install dependencies
       run: make install
-    - name: Run linter
-      run: make lint
     - name: Test & coverage
       uses: paambaati/codeclimate-action@v2.7.5
       env:

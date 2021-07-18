@@ -1,7 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Lodo4ka/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/Lodo4ka/frontend-project-lvl2/actions)
 
-[![Actions Status](https://github.com/Lodo4ka/frontend-project-lvl2/workflows/linter-check/badge.svg)](https://github.com/Lodo4ka/frontend-project-lvl2/actions)
+[![Actions Status](https://github.com/Lodo4ka/frontend-project-lvl2/workflows/Linter/badge.svg)](https://github.com/Lodo4ka/frontend-project-lvl2/actions)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/80befd31dee314fbcfcd/maintainability)](https://codeclimate.com/github/Lodo4ka/frontend-project-lvl2/maintainability)
 
