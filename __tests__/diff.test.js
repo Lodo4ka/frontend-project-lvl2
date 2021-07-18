@@ -4,7 +4,7 @@ import {
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import generateDiff from '../src/generateDiff.js';
+import generateDiff from '../src/diff.js';
 
 const __filename = fileURLToPath((import.meta.url));
 const __dirname = dirname(__filename);
