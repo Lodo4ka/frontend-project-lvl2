@@ -1,5 +1,5 @@
 import {
-  isObject, has, isString, compact,
+  isObject, isString, compact,
 } from 'lodash-es';
 
 const getValue = (arg) => {
@@ -13,8 +13,6 @@ const getValue = (arg) => {
 };
 
 export default (diff) => {
-  const isNestedNode = (children) => isObject(children) && has(children[0], 'key');
-
   const plainNestedLines = (arg, parent) => compact(
     arg
       .flatMap(({ key, status, value }) => {
@@ -29,7 +27,9 @@ export default (diff) => {
         if (status === 'changed') {
           return `Property '${currentKey}' was updated. From ${getValue(value.oldValue)} to ${getValue(value.newValue)}`;
         }
-        if (isNestedNode(value)) { return plainNestedLines(value, [...parent, key]); }
+        if (status === 'nested') {
+          return plainNestedLines(value, [...parent, key]);
+        }
         return null;
       }),
   );
