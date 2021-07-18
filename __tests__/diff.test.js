@@ -26,6 +26,13 @@ describe('check parser with all formatters', () => {
     expect(result).toEqual(asnwerNested);
   });
 
+  test('compare two nested json with default formatter', () => {
+    const file1 = getFixturePath('file1.json');
+    const file2 = getFixturePath('file2.json');
+    const result = diff(file1, file2);
+    expect(result).toEqual(asnwerNested);
+  });
+
   test('compare two nested json with format stylish from CI', () => {
     const file1 = getFixturePath('file1_ci.json');
     const file2 = getFixturePath('file2_ci.json');
