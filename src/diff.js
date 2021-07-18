@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import astDiff from './generateAstDiff.js';
+import generateAstDiff from './generateAstDiff.js';
 import getExtensionName from './getExtensionName.js';
 import getParser from './parsers/index.js';
 import getFormatter from './formatter/index.js';
@@ -16,7 +16,7 @@ const getParsedData = (path) => {
 export default (path1, path2, choisesFormatter = 'stylish') => {
   const source1 = getParsedData(path1);
   const source2 = getParsedData(path2);
-  const ast = astDiff(source1, source2);
-  const formatter = getFormatter(choisesFormatter);
-  return formatter(ast);
+  const diff = generateAstDiff(source1, source2);
+  const format = getFormatter(choisesFormatter);
+  return format(diff);
 };

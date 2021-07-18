@@ -21,8 +21,8 @@ const getValue = (value, depth) => {
   ].join('\n');
 };
 
-export default (diffInfo) => {
-  const createStylishLines = (diff, depth) => diff.flatMap(({ key, status, value }) => {
+export default (diff) => {
+  const createStylishLines = (arg, depth) => arg.flatMap(({ key, status, value }) => {
     if (status === 'nested') {
       return [`${renderSpaces(depth)}  ${key}: {`, ...createStylishLines(value, depth + 2), `${renderSpaces(depth + 1)}}`];
     }
@@ -40,7 +40,7 @@ export default (diffInfo) => {
     }
     return [`${renderSpaces(depth)}  ${key}: ${`${getValue(value, depth + 2)}`}`];
   });
-  const lines = createStylishLines(diffInfo, 1);
+  const lines = createStylishLines(diff, 1);
   return [
     '{',
     ...lines,
