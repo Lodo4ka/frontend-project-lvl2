@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import astDiff from './astDiff.js';
+import astDiff from './generateAstDiff.js';
 import getExtensionName from './getExtensionName.js';
 import getParser from './parsers/index.js';
 import getFormatter from './formatter/index.js';
