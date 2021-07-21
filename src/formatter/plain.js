@@ -2,7 +2,7 @@ import {
   isObject, isString, compact,
 } from 'lodash-es';
 
-const getValue = (arg) => {
+const renderValue = (arg) => {
   if (isObject(arg)) {
     return '[complex value]';
   }
@@ -19,13 +19,13 @@ export default (diff) => {
         const currentKey = [...parent, key].join('.');
 
         if (status === 'added') {
-          return `Property '${currentKey}' was added with value: ${getValue(value)}`;
+          return `Property '${currentKey}' was added with value: ${renderValue(value)}`;
         }
         if (status === 'deleted') {
           return `Property '${currentKey}' was removed`;
         }
         if (status === 'changed') {
-          return `Property '${currentKey}' was updated. From ${getValue(value.oldValue)} to ${getValue(value.newValue)}`;
+          return `Property '${currentKey}' was updated. From ${renderValue(value.oldValue)} to ${renderValue(value.newValue)}`;
         }
         if (status === 'nested') {
           return plainNestedLines(value, [...parent, key]);
