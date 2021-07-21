@@ -7,6 +7,4 @@ const parsers = {
   json: jsonParser,
 };
 
-const getParser = (typeFormatter) => parsers[typeFormatter];
-
-export default getParser;
+export default (data, formatFile) => parsers[formatFile](data);
