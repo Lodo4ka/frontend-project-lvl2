@@ -20,7 +20,7 @@ describe('check parser with all formatters', () => {
   const plainNestedCI = readFile('result_plain_ci.txt');
 
   test.each`
-    title | file1 | file2 | formatter | expected
+    title | fileName1 | fileName2 | formatter | expected
     ${'compare two nested json with format stylishFormatter'} | ${'file1.json'} | ${'file2.json'} | ${'stylish'} | ${asnwerNested}
     ${'compare two nested json with default formatter'} | ${'file1.json'} | ${'file2.json'} | ${undefined} | ${asnwerNested}
     ${'compare two nested json with format stylish from CI'} | ${'file1_ci.json'} | ${'file2_ci.json'} | ${'stylish'} | ${nestedAnswerCI}
@@ -30,10 +30,10 @@ describe('check parser with all formatters', () => {
     ${'compare two nested yml with format stylish from CI'} | ${'file1_ci.yml'} | ${'file2_ci.yml'} | ${'stylish'} | ${nestedAnswerCI}
     ${'compare two nested yml with format plain from CI'} | ${'file1_ci.yml'} | ${'file2_ci.yml'} | ${'plain'} | ${plainNestedCI}
   `('$title', ({
-    file1, file2, formatter, expected,
+    fileName1, fileName2, formatter, expected,
   }) => {
-    const fixture1 = getFixturePath(file1);
-    const fixture2 = getFixturePath(file2);
+    const fixture1 = getFixturePath(fileName1);
+    const fixture2 = getFixturePath(fileName2);
     const result = generateDiff(fixture1, fixture2, formatter);
     expect(result).toEqual(expected);
   });
