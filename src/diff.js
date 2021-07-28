@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import generateTreeDiff from './generateTreeDiff.js';
-import parse from './parsers';
+import parse from './parsers.js';
 import format from './formatters/index.js';
 
 const parseFile = (filePath) => {
