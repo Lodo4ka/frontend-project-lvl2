@@ -2,14 +2,14 @@ import {
   union, has, isObject, get, keys, sortBy, isEqual,
 } from 'lodash-es';
 
-const generateAstDiff = (obj1, obj2) => {
+const generateTreeDiff = (obj1, obj2) => {
   const unionKeys = union(keys(obj1), keys(obj2));
   return sortBy(unionKeys).map((key) => {
     if (isObject(get(obj1, key)) && isObject(get(obj2, key))) {
       return {
         key,
         status: 'nested',
-        value: generateAstDiff(get(obj1, key), get(obj2, key)),
+        children: generateTreeDiff(get(obj1, key), get(obj2, key)),
       };
     }
     if (!has(obj1, key)) {
@@ -41,4 +41,4 @@ const generateAstDiff = (obj1, obj2) => {
   });
 };
 
-export default generateAstDiff;
+export default generateTreeDiff;

@@ -1,19 +1,27 @@
 import fs from 'fs';
+import path from 'path';
 
-import generateAstDiff from './generateAstDiff.js';
-import getFormatFile from './getFormatFile.js';
-import parse from './parsers/index.js';
+import generateTreeDiff from './generateTreeDiff.js';
+import parse from './parsers';
 import format from './formatters/index.js';
 
-const parseFile = (path) => {
-  const data = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' });
-  const formatFile = getFormatFile(path);
+const parseFile = (filePath) => {
+  const getFormatFile = (pathName) => {
+    const formatName = path.extname(pathName);
+    const extName = formatName.match(/([^.]+)/g);
+    return extName;
+  };
+
+  const data = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' });
+  const formatFile = getFormatFile(filePath);
   return parse(data, formatFile);
 };
 
-export default (path1, path2, choisesFormatter = 'stylish') => {
-  const source1 = parseFile(path1);
-  const source2 = parseFile(path2);
-  const diff = generateAstDiff(source1, source2);
+export default (filePath1, filePath2, choisesFormatter = 'stylish') => {
+  const pathName1 = path.resolve(filePath1);
+  const pathName2 = path.resolve(filePath2);
+  const source1 = parseFile(pathName1);
+  const source2 = parseFile(pathName2);
+  const diff = generateTreeDiff(source1, source2);
   return format(diff, choisesFormatter);
 };

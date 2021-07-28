@@ -22,9 +22,11 @@ const renderValue = (value, depth) => {
 };
 
 export default (diff) => {
-  const createStylishLines = (arg, depth) => arg.flatMap(({ key, status, value }) => {
+  const createStylishLines = (arg, depth) => arg.flatMap(({
+    key, status, value, children,
+  }) => {
     if (status === 'nested') {
-      return [`${renderSpaces(depth)}  ${key}: {`, ...createStylishLines(value, depth + 2), `${renderSpaces(depth + 1)}}`];
+      return [`${renderSpaces(depth)}  ${key}: {`, ...createStylishLines(children, depth + 2), `${renderSpaces(depth + 1)}}`];
     }
     if (status === 'added') {
       return [`${renderSpaces(depth)}+ ${key}: ${renderValue(value, depth + 2)}`];

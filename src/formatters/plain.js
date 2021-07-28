@@ -15,7 +15,9 @@ const renderValue = (arg) => {
 export default (diff) => {
   const plainNestedLines = (arg, parent) => compact(
     arg
-      .flatMap(({ key, status, value }) => {
+      .flatMap(({
+        key, status, value, children,
+      }) => {
         const currentKey = [...parent, key].join('.');
 
         if (status === 'added') {
@@ -28,7 +30,7 @@ export default (diff) => {
           return `Property '${currentKey}' was updated. From ${renderValue(value.oldValue)} to ${renderValue(value.newValue)}`;
         }
         if (status === 'nested') {
-          return plainNestedLines(value, [...parent, key]);
+          return plainNestedLines(children, [...parent, key]);
         }
         return null;
       }),
