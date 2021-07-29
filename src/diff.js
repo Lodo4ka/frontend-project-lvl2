@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import generateTreeDiff from './generateTreeDiff.js';
+import generateDiffTree from './generateDiffTree.js';
 import parse from './parsers.js';
 import format from './formatters/index.js';
 
@@ -22,6 +22,6 @@ export default (filePath1, filePath2, choisesFormatter = 'stylish') => {
   const pathName2 = path.resolve(filePath2);
   const source1 = parseFile(pathName1);
   const source2 = parseFile(pathName2);
-  const diff = generateTreeDiff(source1, source2);
+  const diff = generateDiffTree(source1, source2);
   return format(diff, choisesFormatter);
 };

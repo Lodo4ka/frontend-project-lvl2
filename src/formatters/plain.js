@@ -19,20 +19,14 @@ export default (diff) => {
         key, status, value, children,
       }) => {
         const currentKey = [...parent, key].join('.');
-
-        if (status === 'added') {
-          return `Property '${currentKey}' was added with value: ${renderValue(value)}`;
-        }
-        if (status === 'deleted') {
-          return `Property '${currentKey}' was removed`;
-        }
-        if (status === 'changed') {
-          return `Property '${currentKey}' was updated. From ${renderValue(value.oldValue)} to ${renderValue(value.newValue)}`;
-        }
-        if (status === 'nested') {
-          return plainNestedLines(children, [...parent, key]);
-        }
-        return null;
+        const actions = {
+          added: () => `Property '${currentKey}' was added with value: ${renderValue(value)}`,
+          deleted: () => `Property '${currentKey}' was removed`,
+          changed: () => `Property '${currentKey}' was updated. From ${renderValue(value.oldValue)} to ${renderValue(value.newValue)}`,
+          nested: () => plainNestedLines(children, [...parent, key]),
+          unchanged: () => {},
+        };
+        return actions[status]();
       }),
   );
   const lines = plainNestedLines(diff, []);
