@@ -21,7 +21,7 @@ const renderValue = (value, depth) => {
   ].join('\n');
 };
 
-export default (diff) => {
+export default function formatToStylish(diff) {
   const createStylishLines = (arg, depth) => arg.flatMap(({
     key, status, value, children,
   }) => {
@@ -43,4 +43,4 @@ export default (diff) => {
     ...lines,
     '}',
   ].join('\n');
-};
+}

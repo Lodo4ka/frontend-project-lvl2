@@ -7,6 +7,6 @@ const formatters = {
   json: (diff) => JSON.stringify(diff, null, 2),
 };
 
-const format = (data, choisesFormatter) => formatters[choisesFormatter](data);
+const format = (data, formatterType) => formatters[formatterType](data);
 
 export default format;

@@ -5,23 +5,23 @@ import generateDiffTree from './generateDiffTree.js';
 import parse from './parsers.js';
 import format from './formatters/index.js';
 
-const parseFile = (filePath) => {
-  const getFormatFile = (pathName) => {
-    const formatName = path.extname(pathName);
-    const extName = formatName.match(/([^.]+)/g);
-    return extName;
-  };
+const getFileFormat = (pathName) => {
+  const formatName = path.extname(pathName);
+  const extName = formatName.match(/([^.]+)/g);
+  return extName;
+};
 
+const parseFile = (filePath) => {
   const data = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' });
-  const formatFile = getFormatFile(filePath);
+  const formatFile = getFileFormat(filePath);
   return parse(data, formatFile);
 };
 
-export default (filePath1, filePath2, choisesFormatter = 'stylish') => {
+export default function generateDiff(filePath1, filePath2, formatterType = 'stylish') {
   const pathName1 = path.resolve(filePath1);
   const pathName2 = path.resolve(filePath2);
   const source1 = parseFile(pathName1);
   const source2 = parseFile(pathName2);
   const diff = generateDiffTree(source1, source2);
-  return format(diff, choisesFormatter);
-};
+  return format(diff, formatterType);
+}

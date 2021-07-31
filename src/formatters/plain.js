@@ -12,8 +12,8 @@ const renderValue = (arg) => {
   return arg;
 };
 
-export default (diff) => {
-  const plainNestedLines = (arg, parent) => compact(
+export default function formatToParse(diff) {
+  const createPlainLines = (arg, parent) => compact(
     arg
       .flatMap(({
         key, status, value, children,
@@ -23,12 +23,12 @@ export default (diff) => {
           added: () => `Property '${currentKey}' was added with value: ${renderValue(value)}`,
           deleted: () => `Property '${currentKey}' was removed`,
           changed: () => `Property '${currentKey}' was updated. From ${renderValue(value.oldValue)} to ${renderValue(value.newValue)}`,
-          nested: () => plainNestedLines(children, [...parent, key]),
+          nested: () => createPlainLines(children, [...parent, key]),
           unchanged: () => {},
         };
         return actions[status]();
       }),
   );
-  const lines = plainNestedLines(diff, []);
+  const lines = createPlainLines(diff, []);
   return lines.join('\n');
-};
+}
