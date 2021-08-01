@@ -12,7 +12,7 @@ const renderValue = (arg) => {
   return arg;
 };
 
-export default function formatToParse(diff) {
+export default function formatToPlain(diff) {
   const createPlainLines = (arg, parent) => compact(
     arg
       .flatMap(({
